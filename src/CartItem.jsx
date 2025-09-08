@@ -1,32 +1,19 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
+import { removeItem, updateQuantity } from './CreateSlice';
 import './CartItem.css';
-//import { useNavigate } from 'react-router-dom';
 
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const cartItems = useSelector((state) => state.cart.items);
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
-     return cartItems.reduce((total, item) => {
-      return total + calculateTotalCost(item);
-    }, 0);
+    return cart.reduce((total, item) => total + Number(item.cost.substring(1)) * item.quantity, 0);
   };
 
   const handleContinueShopping = (e) => {
-    if (onContinueShopping) {
-      onContinueShopping();
-    } /*else {
-      navigate('/products'); // fallback
-    }*/
-  };
-
-  const handleCheckoutShopping = (e) => {
-    alert('Functionality to be added for future reference');
+    onContinueShopping(e);
   };
 
   const handleIncrement = (item) => {
@@ -34,28 +21,21 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    if (item.quantity > 1) {
-      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-    } else {
-      dispatch(removeItem(item.name));
-    }
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(item.name));
+    dispatch(removeItem(item));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-    return item.quantity * parseFloat(item.cost);
-  };
-
-  const calculateTotalQuantity = () => {
-    return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+    return Number(item.cost.substring(1)) * item.quantity;
   };
 
   return (
     <div className="cart-container">
+      <h2 style={{ color: 'black' }}>Total Plants : {cart.length}</h2>
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
       <div>
         {cart.map(item => (
@@ -86,5 +66,3 @@ const CartItem = ({ onContinueShopping }) => {
 };
 
 export default CartItem;
-
-
