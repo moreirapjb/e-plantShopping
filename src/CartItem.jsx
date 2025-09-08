@@ -42,12 +42,16 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(itemName));
+    dispatch(removeItem(item.name));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
     return item.quantity * parseFloat(item.cost);
+  };
+
+  const calculateTotalQuantity = () => {
+    return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
   };
 
   return (
