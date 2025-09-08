@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
@@ -20,9 +20,9 @@ const CartItem = ({ onContinueShopping }) => {
   const handleContinueShopping = (e) => {
     if (onContinueShopping) {
       onContinueShopping();
-    } else {
+    } /*else {
       navigate('/products'); // fallback
-    }
+    }*/
   };
 
   const handleCheckoutShopping = (e) => {
